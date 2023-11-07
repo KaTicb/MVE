@@ -36,11 +36,6 @@ int main(int argc, char **argv, char *env[]) {
     }
   // EMPTY SPACE
 
-  //  double** arrT = new double*[NY+1];
-  //  for (i = 0; i < m; ++i) {
-  //    arrT[i] = new double[NX +1];
-  //  }
-
   double alf_1 = -h / r;
   double alf_2 = -r / h;
   double alf_3 = alf_2 * 0.5f;
@@ -66,9 +61,9 @@ int main(int argc, char **argv, char *env[]) {
     T[j][i] = T2;
   }
   // CONTACTS
-
+  std::ofstream MDD_write("../dataMDD.bin",
+                          std::ios_base::out | std::ios_base::binary);
   double T_1, T_k1, dT, delta;
-  std::ofstream T_write("../dataT.txt", std::ios_base::out);
   // RECOUNT CORRECT TEMPERATURE
   while (k < REP) {
     for (int j = 0; j <= j3; ++j) {
@@ -173,33 +168,33 @@ int main(int argc, char **argv, char *env[]) {
     if (max_rel_diff < EPS)
       break;
 
+    MDD_write << max_rel_diff << " ";
+
     max_rel_diff = 0.0f;
     ++k;
   }
   // RECOUNT CORRECT TEMPERATURE
 
-  // FILE WRITE
+  std::ofstream T_write("../dataT.txt", std::ios_base::out);
+  std::ofstream T_write_bin("../dataT.bin",
+                            std::ios_base::out | std::ios_base::binary);
 
+  // FILE WRITE
   for (j = NY - 1; j >= 0; --j) {
     for (i = 0; i < NX; ++i) {
       T_write << std::fixed << std::setw(6) << std::setprecision(2) << T[j][i];
+      T_write_bin << T[j][i] << " ";
     }
     T_write << std::endl;
+    T_write_bin << std::endl;
   }
   // FILE WRITE
-
-  // TEST PRINT
-  //  for (i = 0; i < NX; ++i) {
-  //    for (j = 0; j < NY; ++j) {
-  //      std::cout << T[j][i] << "  ";
-  //    }
-  //    std::cout << std::endl;
-  //  }
-  // TEST PRINT
 
   std::cout << "Hi, Wasley:)" << std::endl;
 
   T_write.close();
+  MDD_write.close();
+  T_write_bin.close();
 
   return EXIT_SUCCESS;
 }
