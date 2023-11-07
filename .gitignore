@@ -1,3 +1,5 @@
 dataT.txt
+dataT.bin
 cmake-build-debug
 test.cpp
+.idea
