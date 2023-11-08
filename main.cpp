@@ -10,8 +10,8 @@
 #define lambda 1.7f
 #define REP 3000
 #define EPS 1.e-4
-#define T1 5.0f
-#define T2 15.0f
+#define T1 20.0f
+#define T2 20.0f
 
 int main(int argc, char **argv, char *env[]) {
 
