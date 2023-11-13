@@ -3,4 +3,6 @@ project(MVE)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(MVE main.cpp)
+add_executable(MVE
+        #main.cpp
+        main_1.cpp)
