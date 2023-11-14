@@ -1,44 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
-NX, NY, NT = 15 * 3 + 1, 12 * 3 + 1, 2
-Size = [NX, NY]
+fig, ax = plt.subplots()
+def animate(i):
+   ax.clear()
+   matrix = np.loadtxt(f'./data_1/T{i+1}.bin', dtype='f')
+   plt.imshow(matrix, cmap=plt.cm.get_cmap('rainbow', 5096), vmin=matrix.min(), vmax=matrix.max())
 
-# Чтение файла T1.dat
-try:
-    with open('c:/work/T1.dat', 'rb') as f:
-        U = np.fromfile(f, dtype=np.float64, count=NX * NY).reshape(Size)
-except FileNotFoundError:
-    print('File "T1.dat" not found')
-
-x = np.arange(1, NX + 1)
-y = np.arange(1, NY + 1)
-xx, yy = np.meshgrid(y, x)
-
-plt.figure()
-plt.surf(xx, yy, U)
-plt.axis([1, NX, 1, NY, 0, 15])
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.zlabel('U')
+ani = animation.FuncAnimation(fig, animate, frames=300, interval=100)
 plt.show()
-
-# Чтение и отображение остальных файлов
-basename = './data_T/T'
-for i in range(2, NT + 2):
-    filename = f'{basename}{i}.bin'
-    try:
-        with open(filename, 'rb') as f:
-            U = np.fromfile(f, dtype=np.float64, count=NX * NY).reshape(Size)
-    except FileNotFoundError:
-        print(f'File "{filename}" not found')
-
-    plt.figure()
-    plt.surf(xx, yy, U)
-    plt.axis([1, NX, 1, NY, 0, 15])
-    plt.title(f'n={i} N={NT + 1}')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.zlabel('U')
-    plt.show()
-    plt.pause(0.05)

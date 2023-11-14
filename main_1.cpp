@@ -7,9 +7,9 @@
 #define r 0.3f
 #define NXB 15
 #define NYB 12
-#define REP 3000
-#define T1 5.0f
-#define T2 15.0f
+#define REP 30000
+#define T1 150.0f
+#define T2 200.0f
 #define t_end 400.0f
 
 int main(int argc, char **argv, char *env[]) {
@@ -174,7 +174,7 @@ int main(int argc, char **argv, char *env[]) {
 
       sprintf_s(filename, sizeof(filename), "../data_1/T%d.bin", ++file_num);
       std::ofstream T_write_bin(filename,
-                                std::ios_base::out | std::ios_base::binary);
+                                std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
 
       for (j = NY - 1; j >= 0; --j) {
         for (i = 0; i < NX; ++i) {
