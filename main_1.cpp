@@ -16,31 +16,25 @@
 constexpr std::size_t NX = 3 * NXB + 1;
 constexpr std::size_t NY = 3 * NYB + 1;
 
-[[nodiscard]] std::array<std::array<double, NX>, NY> &
-setup_contacts(std::array<std::array<double, NX>, NY> &T, size_t i1, size_t i2,
-               size_t i3, size_t j1, size_t j2, size_t j3) {
-  {
-    // CONTACTS
-    std::size_t i;
-    std::size_t j;
+void setup_contacts(std::array<std::array<double, NX>, NY> &T, size_t i1,
+                    size_t i2, size_t i3, size_t j1, size_t j2, size_t j3) {
+  std::size_t i;
+  std::size_t j;
 
-    for (j = 0, i = 0; i <= i1; ++i) {
-      T[j][i] = T1;
-    }
-
-    for (j = 0, i = 0; j <= j1; ++j) {
-      T[j][i] = T1;
-    }
-
-    for (j = j2, i = i3; j <= j3; ++j) {
-      T[j][i] = T2;
-    }
-    for (j = j3, i = i2; i <= i3; ++i) {
-      T[j][i] = T2;
-    }
-    // CONTACTS
+  for (j = 0, i = 0; i <= i1; ++i) {
+    T[j][i] = T1;
   }
-  return T;
+
+  for (j = 0, i = 0; j <= j1; ++j) {
+    T[j][i] = T1;
+  }
+
+  for (j = j2, i = i3; j <= j3; ++j) {
+    T[j][i] = T2;
+  }
+  for (j = j3, i = i2; i <= i3; ++i) {
+    T[j][i] = T2;
+  }
 }
 
 void write_to_file(const std::filesystem::path &dir_path,
@@ -108,7 +102,7 @@ int main(int argc, char **argv, char *env[]) {
 
   std::cout << "Successfully defined parameters" << std::endl;
 
-  T = setup_contacts(T, i1, i2, i3, j1, j2, j3);
+  setup_contacts(T, i1, i2, i3, j1, j2, j3);
 
   std::cout << "Successfully setup contacts" << std::endl;
 
@@ -212,7 +206,7 @@ int main(int argc, char **argv, char *env[]) {
           continue;
       }
     }
-    
+
     // FILE WRITE
     if (!(k % 100)) {
       std::string dirPath = "data_1";
