@@ -1,4 +1,6 @@
+#include <array>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -10,32 +12,51 @@
 #define REP 30000
 #define T1 150.0f
 #define T2 200.0f
-#define t_end 400.0f
 
+constexpr std::size_t NX = 3 * NXB + 1;
+constexpr std::size_t NY = 3 * NYB + 1;
+
+void write_to_file(const std::filesystem::path &dir_path,
+                   const std::string &filename,
+                   const std::array<std::array<double, NX>, NY> &T) {
+
+  if (!std::filesystem::exists(dir_path)) {
+    if (!std::filesystem::create_directories(dir_path)) {
+      std::cerr << "Failed to create directory " << dir_path << std::endl;
+      return;
+    }
+  }
+
+  const auto file_path = dir_path / filename;
+  std::ofstream file(file_path,
+                     std::ios::out | std::ios::binary | std::ios::trunc);
+
+  if (!file.is_open()) {
+    std::cerr << "Unable to open file " << file_path << std::endl;
+    return;
+  }
+
+  for (int j = NY - 1; j >= 0; --j) {
+    for (int i = 0; i < NX; ++i) {
+      file << T[j][i] << " ";
+    }
+    file << std::endl;
+  }
+
+  file.close();
+}
 int main(int argc, char **argv, char *env[]) {
 
   // DEFINITION
-  int NX = 3 * NXB + 1;
-  int NY = 3 * NYB + 1;
-  int N = NY * NX;
-
-  double T[NY][NX];
+  std::array<std::array<double, NX>, NY> T{};
   double s = h * r;
 
-  int i1 = NXB, i2 = NXB + NXB, i3 = NXB + NXB + NXB, j1 = NYB, j2 = NYB + NYB,
-      j3 = NYB + NYB + NYB;
+  std::size_t i1 = NXB, i2 = NXB + NXB, i3 = NXB + NXB + NXB, j1 = NYB,
+              j2 = NYB + NYB, j3 = NYB + NYB + NYB;
 
-  int i, j, m = NX + 1, k = 0, file_num = 0;
+  std::size_t i, j, m = NX + 1, file_num = 0;
 
-  char filename[128];
   // DEFINITION
-
-  // EMPTY SPACE
-  for (j = 0; j <= j3; ++j)
-    for (i = 0; i <= i3; ++i) {
-      T[j][i] = 0;
-    }
-  // EMPTY SPACE
 
   double alf_1 = -h / r;
   double alf_2 = -r / h;
@@ -69,9 +90,9 @@ int main(int argc, char **argv, char *env[]) {
 
   double T_k1, dT, delta;
   // RECOUNT CORRECT TEMPERATURE
-  while (k < REP) {
-    for (int j = 0; j <= j3; ++j) {
-      for (int i = 0; i <= i3; ++i) {
+  for (std::size_t k = 0; k < REP; k++) {
+    for (std::size_t j = 0; j <= j3; ++j) {
+      for (std::size_t i = 0; i <= i3; ++i) {
 
         // ABIK +
         if (i > 0 && i < i3 && j > 0 && j < j1) {
@@ -171,22 +192,10 @@ int main(int argc, char **argv, char *env[]) {
 
     // FILE WRITE
     if (!(k % 100)) {
-
-      sprintf_s(filename, sizeof(filename), "../data_1/T%d.bin", ++file_num);
-      std::ofstream T_write_bin(filename,
-                                std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
-
-      for (j = NY - 1; j >= 0; --j) {
-        for (i = 0; i < NX; ++i) {
-          T_write_bin << T[j][i] << " ";
-        }
-        T_write_bin << std::endl;
-      }
-      // FILE WRITE
-      T_write_bin.close();
+      std::string dirPath = "data_1";
+      std::string filename = "T" + std::to_string(++file_num) + ".bin";
+      write_to_file(dirPath, filename, T);
     }
-    //count for first while
-    ++k;
   }
 
   return EXIT_SUCCESS;
