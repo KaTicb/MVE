@@ -215,5 +215,8 @@ int main(int argc, char **argv, char *env[]) {
     }
   }
 
+  std::cout << "Done! Now you can run python script to visualize the data."
+            << std::endl;
+
   return EXIT_SUCCESS;
 }
