@@ -16,6 +16,33 @@
 constexpr std::size_t NX = 3 * NXB + 1;
 constexpr std::size_t NY = 3 * NYB + 1;
 
+[[nodiscard]] std::array<std::array<double, NX>, NY> &
+setup_contacts(std::array<std::array<double, NX>, NY> &T, size_t i1, size_t i2,
+               size_t i3, size_t j1, size_t j2, size_t j3) {
+  {
+    // CONTACTS
+    std::size_t i;
+    std::size_t j;
+
+    for (j = 0, i = 0; i <= i1; ++i) {
+      T[j][i] = T1;
+    }
+
+    for (j = 0, i = 0; j <= j1; ++j) {
+      T[j][i] = T1;
+    }
+
+    for (j = j2, i = i3; j <= j3; ++j) {
+      T[j][i] = T2;
+    }
+    for (j = j3, i = i2; i <= i3; ++i) {
+      T[j][i] = T2;
+    }
+    // CONTACTS
+  }
+  return T;
+}
+
 void write_to_file(const std::filesystem::path &dir_path,
                    const std::string &filename,
                    const std::array<std::array<double, NX>, NY> &T) {
@@ -45,18 +72,26 @@ void write_to_file(const std::filesystem::path &dir_path,
 
   file.close();
 }
+
 int main(int argc, char **argv, char *env[]) {
+
+  std::cout << "Command-line arguments:\n";
+  for (int i = 0; i < argc; i++) {
+    std::cout << "argv[" << i << "]: " << argv[i] << "\n";
+  }
 
   // DEFINITION
   std::array<std::array<double, NX>, NY> T{};
   double s = h * r;
 
-  std::size_t i1 = NXB, i2 = NXB + NXB, i3 = NXB + NXB + NXB, j1 = NYB,
-              j2 = NYB + NYB, j3 = NYB + NYB + NYB;
+  std::size_t i1 = NXB;
+  std::size_t i2 = NXB + NXB;
+  std::size_t i3 = NXB + NXB + NXB;
+  std::size_t j1 = NYB;
+  std::size_t j2 = NYB + NYB;
+  std::size_t j3 = NYB + NYB + NYB;
 
-  std::size_t i, j, m = NX + 1, file_num = 0;
-
-  // DEFINITION
+  std::size_t file_num = 0;
 
   double alf_1 = -h / r;
   double alf_2 = -r / h;
@@ -71,24 +106,12 @@ int main(int argc, char **argv, char *env[]) {
   double beta_3 = beta_1 * 2;                            // 2 directs
   double beta_4 = beta_1 * 4;                            // 1 direct
 
-  // CONTACTS
-  for (j = 0, i = 0; i <= i1; ++i) {
-    T[j][i] = T1;
-  }
+  std::cout << "Successfully defined parameters" << std::endl;
 
-  for (j = 0, i = 0; j <= j1; ++j) {
-    T[j][i] = T1;
-  }
+  T = setup_contacts(T, i1, i2, i3, j1, j2, j3);
 
-  for (j = j2, i = i3; j <= j3; ++j) {
-    T[j][i] = T2;
-  }
-  for (j = j3, i = i2; i <= i3; ++i) {
-    T[j][i] = T2;
-  }
-  // CONTACTS
+  std::cout << "Successfully setup contacts" << std::endl;
 
-  double T_k1, dT, delta;
   // RECOUNT CORRECT TEMPERATURE
   for (std::size_t k = 0; k < REP; k++) {
     for (std::size_t j = 0; j <= j3; ++j) {
@@ -189,7 +212,7 @@ int main(int argc, char **argv, char *env[]) {
           continue;
       }
     }
-
+    
     // FILE WRITE
     if (!(k % 100)) {
       std::string dirPath = "data_1";
