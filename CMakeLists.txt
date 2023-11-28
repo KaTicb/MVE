@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
-project(MVE)
 
-set(CMAKE_CXX_STANDARD 17)
+project(cm-labs LANGUAGES CXX)
 
-add_executable(MVE
-        #main.cpp
-        main_1.cpp)
+set(CMAKE_CXX_STANDARD 23)
+
+add_subdirectory("src")
