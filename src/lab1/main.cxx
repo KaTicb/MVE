@@ -1,27 +1,27 @@
+#include <array>
 #include <cmath>
+#include <cstdint>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 
-#define h 0.2f
-#define r 0.3f
-#define NXB 15
-#define NYB 12
-#define lambda 1.7f
-#define REP 3000
-#define EPS 1.e-4
-#define T1 20.0f
-#define T2 20.0f
+constexpr double h      = 0.2f;
+constexpr double r      = 0.3f;
+constexpr uint32_t NXB  = 15;
+constexpr uint32_t NYB  = 12;
+constexpr double lambda = 1.7f;
+constexpr uint32_t REP  = 3000;
+constexpr double EPS    = 1.e-4;
+constexpr double T1     = 20.0f;
+constexpr double T2     = 20.0f;
+
+constexpr std::size_t NX = 3 * NXB + 1;
+constexpr std::size_t NY = 3 * NYB + 1;
+constexpr std::size_t N  = NY * NX;
 
 int main(int argc, char **argv, char *env[])
 {
-
-    // DEFINITION
-    int NX = 3 * NXB + 1;
-    int NY = 3 * NYB + 1;
-    int N  = NY * NX;
-
-    double T[NY][NX];
+    std::array<std::array<double, NY>, NX> T{0.0};
     double max_rel_diff = 0.0;
 
     int i1 = NXB, i2 = NXB + NXB, i3 = NXB + NXB + NXB, j1 = NYB,
@@ -29,14 +29,6 @@ int main(int argc, char **argv, char *env[])
 
     int i, j, m = NX + 1, k = 0;
     // DEFINITION
-
-    // EMPTY SPACE
-    for (j = 0; j <= j3; ++j)
-        for (i = 0; i <= i3; ++i)
-        {
-            T[j][i] = 0;
-        }
-    // EMPTY SPACE
 
     double alf_1 = -h / r;
     double alf_2 = -r / h;
@@ -218,11 +210,11 @@ int main(int argc, char **argv, char *env[])
     }
     // FILE WRITE
 
-    std::cout << "Hi, Wasley:)" << std::endl;
+    std::cout << "DONE" << std::endl;
 
     T_write.close();
     MDD_write.close();
     T_write_bin.close();
 
-    return EXIT_SUCCESS;
+    return std::cout.good() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
