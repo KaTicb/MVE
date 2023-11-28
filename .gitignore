@@ -85,6 +85,7 @@ gen/
 *.iws
 build/
 .build/
+.PVS-Studio/
 cmake-build-*/
 
 # CLion files
