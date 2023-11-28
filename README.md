@@ -1,14 +1,28 @@
-# MVE
-Here I'm making labs for MVE 
+# MVE Project
 
----------------------------------
-## Распределение температуры
-В main.cpp лежит код вычислений на плюсах
+This repository is dedicated to my lab assignments for the MVE course.
 
-## Постороение графиков
-В main.py лежит код для построения двухмерного графика распределения температуры и зависимости ошибки(невязки) от итераций
+## Summary
 
-## Файлы с данными
-dataT.txt текстовый документ с распределением температуры
-dataT.bin тоже самое только в записано в бинарном формате 
-dataMDD.bin бинарник с данными по максимальной невязки
+The project focuses primarily on temperature distribution and related
+algorithms, visualizations, and data files.
+
+## Contents
+
+### Temperature Distribution
+
+`main.cpp`: Contains the C++ code for computing the temperature distribution
+algorithms.
+
+### Plot Construction
+
+`main.py`: A Python file for creating 2D plots of temperature distribution and
+the relationship of iteration-dependent errors (residuals).
+
+### Data Files
+
+- `dataT.txt`: A text document that contains the temperature distribution data.
+- `dataT.bin`: Similar to `dataT.txt`, but the data is stored in binary format
+  for more efficient retrieval and storage.
+- `dataMDD.bin`: A binary data file that houses information on maximum
+  residuals.
