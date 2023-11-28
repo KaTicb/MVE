@@ -84,6 +84,7 @@ gen/
 *.ipr
 *.iws
 build/
+.build/
 cmake-build-*/
 
 # CLion files

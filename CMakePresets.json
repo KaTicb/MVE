@@ -7,39 +7,32 @@
   },
   "configurePresets": [
     {
-      "name": "ninja-clang-debug",
+      "name": "ninja-debug",
       "displayName": "ninja-debug",
       "description": "Debug build with assertions, debug info, and additional debugging options.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/.build/ninja-debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_STANDARD": "23",
-        "CMAKE_CXX_FLAGS": "-Og -g -Wall -Wextra -Wpedantic -Wconversion -Wno-unused-function -fmodules-ts",
-        "CMAKE_C_FLAGS": "-Og -g -Wall -Wextra -Wpedantic -Wconversion -Wno-unused-function",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_CXX_FLAGS_DEBUG": "-fsanitize=address,undefined",
-        "CMAKE_C_FLAGS_DEBUG": "-fsanitize=address,undefined"
+        "CMAKE_CXX_STANDARD": "23"
       }
     },
     {
-      "name": "ninja-clang-release",
-      "displayName": "ninja-clang-release",
+      "name": "ninja-release",
+      "displayName": "ninja-release",
       "description": "Release build with aggressive optimizations and without assertions.",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/.build/ninja-release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_CXX_STANDARD": "23",
-        "CMAKE_CXX_FLAGS": "-Ofast -DNDEBUG -march=native",
-        "CMAKE_C_FLAGS": "-Ofast -DNDEBUG -march=native"
+        "CMAKE_CXX_STANDARD": "23"
       }
     },
     {
       "name": "msvc-debug",
       "displayName": "MSVC Debug",
       "description": "Debug build with assertions, debug info, and additional debugging options.",
-      "generator": "Visual Studio",
+      "generator": "Visual Studio 17",
       "binaryDir": "${sourceDir}/.build/msvc-debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -51,7 +44,7 @@
       "name": "msvc-release",
       "displayName": "MSVC Release",
       "description": "Release build with aggressive optimizations and without assertions.",
-      "generator": "Visual Studio",
+      "generator": "Visual Studio 17",
       "binaryDir": "${sourceDir}/.build/msvc-release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
